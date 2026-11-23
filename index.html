@@ -32,6 +32,7 @@
         <h1>คืนนี้…<br><em>มาลอยความปรารถนา</em></h1>
         <p class="hero-description">เลือกกระทงดอกไม้ดวงเล็ก ๆ เขียนสิ่งที่อยู่ในใจ<br class="desktop-only"> แล้วปล่อยให้สายน้ำพาคำอธิษฐานเดินทางไปใต้แสงจันทร์</p>
         <button id="startButton" class="primary-button" type="button">เริ่มลอยกระทง <span>↗</span></button>
+        <button id="homeViewFloatingButton" class="primary-button home-gallery-button" type="button">ไปดูกระทงที่ลอยไว้ <span>✧</span></button>
         <p class="quiet-note"><span>☾</span> คำอธิษฐานของคุณจะถูกเก็บไว้อย่างเป็นส่วนตัว</p>
       </div>
 
@@ -41,7 +42,7 @@
         <div class="scene-stars" id="sceneStars"></div>
         <div class="distant-temple"><span></span><i></i><b></b></div>
         <div class="far-shore"></div>
-        <div class="river river-home"><div class="river-shimmer"></div>
+        <div class="river river-home"><div class="river-shimmer"></div><div class="community-river-track" id="homeRiverTrack" aria-label="กระทงของผู้คนที่ลอยอยู่บนแม่น้ำ"></div>
           <div class="tiny-krathong krathong-one"><span class="tiny-flame"></span></div>
           <div class="tiny-krathong krathong-two"><span class="tiny-flame"></span></div>
           <div class="tiny-krathong krathong-three"><span class="tiny-flame"></span></div>
@@ -134,14 +135,14 @@
 
     <section id="successScreen" class="screen success-screen hidden" aria-labelledby="successTitle">
       <div class="success-stars" aria-hidden="true">✧　·　✦　　·　✧</div>
-      <div class="success-emblem"><span>☾</span><i>✧</i></div>
+      <div class="success-river-scene" aria-label="กระทงของคุณกำลังลอยไปตามสายน้ำ"><div class="success-river-glow"></div><div class="success-river-water"><div class="success-river-track" id="floatingTrack"></div></div><span class="success-river-caption">✦ กระทงของคุณกำลังเดินทางไปกับสายน้ำ ✦</span></div>
       <p class="eyebrow">YOUR WISH IS ON ITS WAY</p>
       <h2 id="successTitle">คำอธิษฐานได้ออกเดินทางแล้ว</h2>
       <p class="success-copy">ขอให้สายน้ำพาความปรารถนาดีนี้<br>ไปพบกับวันที่งดงามของคุณ</p>
       <div class="wish-seal"><span>✦</span> A LITTLE WISH UNDER THE SAME SKY <span>✦</span></div>
       <button id="anotherWishButton" class="primary-button" type="button">ลอยกระทงอีกครั้ง <span>↗</span></button>
       <p class="quiet-note">ขอบคุณที่มาร่วมคืนพิเศษนี้ด้วยกัน</p>
-      <div class="floating-water" aria-label="กระทงที่ลอยอยู่บนสายน้ำ"><div class="floating-track" id="floatingTrack"></div></div>
+
       <button id="viewFloatingButton" class="primary-button gallery-button" type="button">ไปดูกระทงที่ลอยไว้ <span>↗</span></button>
     </section>
     <section id="galleryScreen" class="screen gallery-screen hidden" aria-labelledby="galleryTitle">
