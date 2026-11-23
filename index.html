@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#11142c">
+  <meta name="description" content="A little sky of our own — พื้นที่เล็ก ๆ สำหรับลอยกระทงและฝากคำอธิษฐานใต้แสงจันทร์">
+  <title>A little sky of our own — คืนลอยกระทง</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="ambient-glow glow-one" aria-hidden="true"></div>
+  <div class="ambient-glow glow-two" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="A little sky of our own หน้าหลัก">
+      <span class="brand-mark">✦</span>
+      <span>A little sky <i>of our own</i></span>
+    </a>
+    <span class="festival-pill"><span class="pill-dot"></span> LOY KRATHONG NIGHT</span>
+  </header>
+
+  <main class="app-shell">
+    <section id="homeScreen" class="screen home-screen">
+      <div class="hero-copy">
+        <p class="eyebrow"><span>✧</span> A NIGHT TO MAKE A WISH <span>✧</span></p>
+        <h1>คืนนี้…<br><em>มาลอยความปรารถนา</em></h1>
+        <p class="hero-description">เลือกกระทงดอกไม้ดวงเล็ก ๆ เขียนสิ่งที่อยู่ในใจ<br class="desktop-only"> แล้วปล่อยให้สายน้ำพาคำอธิษฐานเดินทางไปใต้แสงจันทร์</p>
+        <button id="startButton" class="primary-button" type="button">เริ่มลอยกระทง <span>↗</span></button>
+        <p class="quiet-note"><span>☾</span> คำอธิษฐานของคุณจะถูกเก็บไว้อย่างเป็นส่วนตัว</p>
+      </div>
+
+      <div class="festival-scene home-scene" aria-label="ภาพแม่น้ำยามค่ำคืน พระจันทร์เต็มดวง และกระทงลอยน้ำ">
+        <div class="scene-sky"></div>
+        <div class="moon-halo"></div><div class="moon"></div>
+        <div class="scene-stars" id="sceneStars"></div>
+        <div class="distant-temple"><span></span><i></i><b></b></div>
+        <div class="far-shore"></div>
+        <div class="river river-home"><div class="river-shimmer"></div>
+          <div class="tiny-krathong krathong-one"><span class="tiny-flame"></span></div>
+          <div class="tiny-krathong krathong-two"><span class="tiny-flame"></span></div>
+          <div class="tiny-krathong krathong-three"><span class="tiny-flame"></span></div>
+          <div class="water-line line-one"></div><div class="water-line line-two"></div><div class="water-line line-three"></div>
+        </div>
+        <div class="scene-caption"><span>✧</span> let your little wish sail <span>✧</span></div>
+      </div>
+      <div class="home-footer"><span>หนึ่งกระทง · หนึ่งความหวัง · หนึ่งท้องฟ้า</span><span>MADE WITH A LITTLE WISH ♡</span></div>
+    </section>
+
+    <section id="buildScreen" class="screen builder-screen hidden" aria-labelledby="buildTitle">
+      <div class="section-heading">
+        <button class="back-button" type="button" data-go-home aria-label="กลับหน้าหลัก">←</button>
+        <div><p class="eyebrow">STEP 01 / 02</p><h2 id="buildTitle">มาเตรียมกระทงกัน</h2></div>
+        <span class="step-count">01 <i>/ 02</i></span>
+      </div>
+      <div class="progress-track"><span style="width:50%"></span></div>
+      <div class="builder-grid">
+        <div class="builder-controls">
+          <div class="control-group">
+            <div class="control-title"><span class="number-tag">A</span><div><h3>เลือกกระทงของคุณ</h3><p>เลือกดอกไม้ที่อยากให้ลอยไปพร้อมคำอธิษฐาน</p></div></div>
+            <div class="krathong-options" role="group" aria-label="เลือกรูปแบบกระทง">
+              <button class="krathong-option selected" type="button" data-style="lotus" aria-pressed="true">
+                <span class="option-art lotus-art">✿</span><strong>บัวจันทร์</strong><small>Lotus moon</small>
+              </button>
+              <button class="krathong-option" type="button" data-style="jasmine" aria-pressed="false">
+                <span class="option-art jasmine-art">✽</span><strong>มะลิดาว</strong><small>Jasmine star</small>
+              </button>
+              <button class="krathong-option" type="button" data-style="marigold" aria-pressed="false">
+                <span class="option-art marigold-art">✺</span><strong>ดาวเรือง</strong><small>Golden wish</small>
+              </button>
+            </div>
+          </div>
+          <div class="control-group wish-group">
+            <div class="control-title"><span class="number-tag">B</span><div><h3>ฝากคำอธิษฐาน</h3><p>เขียนสิ่งดี ๆ ที่อยากส่งไปกับสายน้ำ</p></div></div>
+            <div class="wish-categories" role="group" aria-label="หมวดคำอธิษฐาน">
+              <button type="button" class="category-chip active" data-category="ความสุข" aria-pressed="true">☀ ความสุข</button>
+              <button type="button" class="category-chip" data-category="การเรียนและความฝัน" aria-pressed="false">✧ ความฝัน</button>
+              <button type="button" class="category-chip" data-category="คนที่รัก" aria-pressed="false">♡ คนสำคัญ</button>
+              <button type="button" class="category-chip" data-category="สุขภาพ" aria-pressed="false">❀ สุขภาพ</button>
+              <button type="button" class="category-chip" data-category="อื่น ๆ" aria-pressed="false">⋯ อื่น ๆ</button>
+            </div>
+            <label class="wish-name-label" for="wishFrom">ลอยจากใคร? <span>(ใส่ชื่อเล่นก็ได้)</span></label>
+            <input id="wishFrom" class="wish-from-input" maxlength="40" placeholder="ชื่อของคุณ หรือไม่ระบุชื่อ" autocomplete="nickname">
+            <label class="sr-only" for="wishMessage">คำอธิษฐานของคุณ</label>
+            <textarea id="wishMessage" maxlength="500" placeholder="ขอให้วันพรุ่งนี้เป็นวันที่ใจดีกับเรา…" rows="4"></textarea>
+            <div class="textarea-meta"><span>เขียนได้ตามสบาย ไม่มีใครเห็นข้อความนี้นอกจากเจ้าของพื้นที่</span><span id="charCount">0 / 500</span></div>
+          </div>
+          <p id="builderStatus" class="form-status" role="status" aria-live="polite"></p>
+          <button id="prepareButton" class="primary-button wide-button" type="button">จุดเทียนและเตรียมกระทง <span>✧</span></button>
+        </div>
+        <aside class="preview-panel">
+          <div class="preview-label">YOUR LITTLE KRATHONG <span>✦</span></div>
+          <div class="preview-water">
+            <div class="preview-moon"></div>
+            <div id="krathongPreview" class="krathong-illustration style-lotus" aria-label="ตัวอย่างกระทง">
+              <div class="leaf-ring"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+              <div class="flower-ring"><i>✿</i><i>✿</i><i>✿</i><i>✿</i><i>✿</i><i>✿</i></div>
+              <div class="krathong-center"><span class="candle-glow"></span><span class="candle"></span><span class="flower-center">✿</span></div>
+            </div>
+            <div class="preview-ripple ripple-a"></div><div class="preview-ripple ripple-b"></div>
+            <p>made of little hopes</p>
+          </div>
+          <div class="preview-caption"><span class="caption-star">✧</span><div><strong>ทุกคำอธิษฐานมีความหมาย</strong><small>ไม่ต้องสวยงาม แค่เป็นความรู้สึกของคุณก็พอ</small></div></div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="releaseScreen" class="screen release-screen hidden" aria-labelledby="releaseTitle">
+      <div class="section-heading centered-heading">
+        <div><p class="eyebrow">STEP 02 / 02</p><h2 id="releaseTitle">ถึงเวลาปล่อยกระทงแล้ว</h2><p class="heading-subtitle">หลับตานึกถึงสิ่งดี ๆ ที่อยากให้เกิดขึ้น แล้วแตะค้างไว้</p></div>
+      </div>
+      <div class="release-scene">
+        <div class="release-moon-halo"></div><div class="release-moon"></div>
+        <div class="release-stars" id="releaseStars"></div>
+        <div class="release-hills"></div>
+        <div class="release-water"><div class="water-gloss gloss-one"></div><div class="water-gloss gloss-two"></div><div class="water-gloss gloss-three"></div></div>
+        <div id="releaseKrathong" class="release-krathong style-lotus">
+          <div class="release-leaves"></div><div class="release-flower">✿</div><div class="release-candle"></div><div class="release-flame"></div>
+        </div>
+        <div class="release-reflection"></div>
+        <div class="release-hint" id="releaseHint">หนึ่งคำอธิษฐาน กำลังจะออกเดินทาง</div>
+      </div>
+      <div class="release-actions">
+        <p id="releaseStatus" class="form-status" role="status" aria-live="polite">แตะค้างประมาณ 1 วินาที เพื่อปล่อยกระทง</p>
+        <button id="releaseButton" class="hold-button" type="button"><span class="hold-progress" id="holdProgress"></span><span class="hold-button-content"><span class="hold-icon">☾</span><span id="holdLabel">แตะค้างเพื่อปล่อยกระทง</span></span></button>
+        <button id="editWishButton" class="text-button" type="button">← กลับไปแก้ไขคำอธิษฐาน</button>
+      </div>
+    </section>
+
+    <section id="successScreen" class="screen success-screen hidden" aria-labelledby="successTitle">
+      <div class="success-stars" aria-hidden="true">✧　·　✦　　·　✧</div>
+      <div class="success-emblem"><span>☾</span><i>✧</i></div>
+      <p class="eyebrow">YOUR WISH IS ON ITS WAY</p>
+      <h2 id="successTitle">คำอธิษฐานได้ออกเดินทางแล้ว</h2>
+      <p class="success-copy">ขอให้สายน้ำพาความปรารถนาดีนี้<br>ไปพบกับวันที่งดงามของคุณ</p>
+      <div class="wish-seal"><span>✦</span> A LITTLE WISH UNDER THE SAME SKY <span>✦</span></div>
+      <button id="anotherWishButton" class="primary-button" type="button">ลอยกระทงอีกครั้ง <span>↗</span></button>
+      <p class="quiet-note">ขอบคุณที่มาร่วมคืนพิเศษนี้ด้วยกัน</p>
+      <div class="floating-water" aria-label="กระทงที่ลอยอยู่บนสายน้ำ"><div class="floating-track" id="floatingTrack"></div></div>
+      <button id="viewFloatingButton" class="primary-button gallery-button" type="button">ไปดูกระทงที่ลอยไว้ <span>↗</span></button>
+    </section>
+    <section id="galleryScreen" class="screen gallery-screen hidden" aria-labelledby="galleryTitle">
+      <div class="section-heading"><button id="galleryBackButton" class="back-button" type="button" aria-label="กลับ">←</button><div><p class="eyebrow">A RIVER OF WISHES</p><h2 id="galleryTitle">กระทงที่ลอยอยู่</h2></div></div>
+      <p class="gallery-subtitle">กระทงเล็ก ๆ จากผู้คนที่ฝากความหวังไว้ใต้ท้องฟ้าเดียวกัน</p>
+      <div id="galleryStatus" class="form-status" role="status"></div><div id="galleryTrack" class="gallery-track"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><span>© A little sky of our own</span><span>ลอยอย่างอ่อนโยน · ฝากความหวังไว้อย่างปลอดภัย</span><a href="admin.html" aria-label="สำหรับเจ้าของเว็บไซต์">✦</a></footer>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
