@@ -171,7 +171,7 @@
     loopItems.forEach((item, index) => {
       const card = document.createElement('div'); card.className = 'floating-krathong-card';
       card.style.setProperty('--float-delay', `${index * -2.4}s`);
-      card.innerHTML = `<span class="float-flower">${item.krathong_style === 'jasmine' ? '✽' : item.krathong_style === 'marigold' ? '✺' : '✿'}</span><span class="float-candle">☼</span><span class="float-name"></span>`;
+      card.innerHTML = `<span class="float-leaf float-leaf-left"></span><span class="float-leaf float-leaf-right"></span><span class="float-base"></span><span class="float-flower">${item.krathong_style === 'jasmine' ? '✽' : item.krathong_style === 'marigold' ? '✺' : '✿'}</span><span class="float-candle">☼</span><span class="float-name"></span>`;
       card.querySelector('.float-name').textContent = item.from_name || 'ผู้ไม่ระบุชื่อ';
       container.appendChild(card);
     });

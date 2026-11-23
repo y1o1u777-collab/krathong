@@ -48,3 +48,16 @@
 @keyframes galleryLoop{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 @keyframes galleryWater{from{transform:translateY(-8px);opacity:.45}to{transform:translateY(8px);opacity:.8}}
 @media(max-width:560px){.gallery-river{height:300px;min-height:300px}.gallery-track{gap:30px}.gallery-track .floating-krathong-card{width:120px;height:105px}}
+
+/* Gallery: continuously move from left to right, while restoring the krathong decorations */
+.gallery-river{isolation:isolate;background:linear-gradient(180deg,#315579 0%,#27476b 38%,#18395c 75%,#102a49 100%)}
+.gallery-water-lines{background:repeating-linear-gradient(180deg,transparent 0px,transparent 17px,rgba(205,229,255,.09) 18px,transparent 20px),repeating-linear-gradient(90deg,transparent 0px,transparent 70px,rgba(255,222,178,.035) 72px,transparent 75px)}
+.gallery-track{left:0;transform:translateX(-50%);animation:galleryLoopRight 38s linear infinite;gap:46px;padding:0 24px}
+@keyframes galleryLoopRight{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+.gallery-track .floating-krathong-card{animation:galleryBob 3.6s ease-in-out infinite;animation-delay:var(--float-delay);}
+@keyframes galleryBob{0%,100%{translate:0 0}50%{translate:0 -5px}}
+.float-base{position:absolute;bottom:18px;width:92px;height:23px;background:linear-gradient(180deg,#c3a76b,#8c744b);clip-path:polygon(0 0,100% 0,78% 100%,22% 100%);border:1px solid rgba(255,228,160,.35);filter:drop-shadow(0 4px 7px rgba(0,0,0,.28))}
+.float-leaf{position:absolute;bottom:30px;width:30px;height:18px;background:linear-gradient(135deg,#a9c77a,#536f4a);border-radius:100% 0 100% 0;z-index:1}
+.float-leaf-left{left:24px;transform:rotate(-20deg)}.float-leaf-right{right:24px;transform:rotate(70deg)}
+.gallery-track .float-flower{z-index:2;top:18px}.gallery-track .float-candle{z-index:3;top:10px}
+@media(max-width:560px){.gallery-track{gap:30px}.float-base{width:78px}.float-leaf{width:25px}}
