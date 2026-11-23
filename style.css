@@ -35,3 +35,13 @@
 @media(max-width:560px){.success-river-scene{height:175px}.success-river-water{height:112px}.success-river-track .floating-krathong-card{width:95px;height:88px}.success-river-caption{font-size:8px}}
 
 .home-gallery-button{margin:12px 0 0 8px;background:rgba(210,195,240,.13);color:#eee5ff;border:1px solid rgba(223,214,255,.25);box-shadow:none}.home-gallery-button:hover{background:rgba(210,195,240,.22);box-shadow:0 8px 25px rgba(197,160,240,.12)}@media(max-width:850px){.home-gallery-button{margin:12px 0 0}}
+
+/* Gallery: visible river with continuously drifting community krathongs */
+.gallery-river{position:relative;height:260px;width:100%;overflow:hidden;border:1px solid rgba(230,220,255,.13);border-radius:22px;background:linear-gradient(180deg,#3d6683 0%,#315d7e 22%,#244a70 55%,#183859 100%);box-shadow:inset 0 0 45px rgba(175,220,255,.08);margin:18px auto 24px}
+.gallery-river:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(180deg,transparent 0 25px,rgba(207,231,255,.055) 26px 27px);animation:galleryWave 8s ease-in-out infinite alternate}
+.gallery-water-lines{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 15%,rgba(255,235,190,.18),transparent 48%);}
+.gallery-track{display:flex;align-items:center;gap:36px;position:absolute;left:0;top:0;height:100%;width:max-content;padding:0 30px;animation:galleryRiverLoop 44s linear infinite;will-change:transform}
+.gallery-track .floating-krathong-card{width:145px;height:135px;flex:none;position:relative;animation:gentleBob 3.4s ease-in-out infinite;animation-delay:var(--float-delay);filter:drop-shadow(0 6px 8px rgba(0,0,0,.25))}
+.gallery-track .float-flower{top:25px;font-size:38px}.gallery-track .float-candle{top:28px;font-size:12px}.gallery-track .float-name{bottom:12px;font-size:12px;min-width:90px}
+@keyframes galleryRiverLoop{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}@keyframes galleryWave{from{transform:translateY(-6px);opacity:.5}to{transform:translateY(6px);opacity:1}}
+@media(max-width:560px){.gallery-river{height:220px;border-radius:16px}.gallery-track{gap:22px;padding:0 18px}.gallery-track .floating-krathong-card{width:120px;height:115px}.gallery-track .float-flower{font-size:30px;top:20px}.gallery-track .float-name{font-size:10px;bottom:8px;min-width:72px}}

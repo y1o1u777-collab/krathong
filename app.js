@@ -167,7 +167,7 @@
   function renderFloatingKrathongs(container, items) {
     container.innerHTML = '';
     if (!items.length) { container.textContent = 'ยังไม่มีใครลอยกระทง'; return; }
-    const loopItems = ['floatingTrack', 'homeRiverTrack'].includes(container.id) ? [...items, ...items] : items;
+    const loopItems = ['floatingTrack', 'homeRiverTrack', 'galleryTrack'].includes(container.id) ? [...items, ...items] : items;
     loopItems.forEach((item, index) => {
       const card = document.createElement('div'); card.className = 'floating-krathong-card';
       card.style.setProperty('--float-delay', `${index * -2.4}s`);
