@@ -167,8 +167,8 @@
   function renderFloatingKrathongs(container, items) {
     container.innerHTML = '';
     if (!items.length) { container.textContent = 'ยังไม่มีใครลอยกระทง'; return; }
-    const loopItems = ['floatingTrack', 'homeRiverTrack', 'galleryTrack'].includes(container.id) ? [...items, ...items] : items;
-    loopItems.forEach((item, index) => {
+    // Render each database entry once; don't double-count krathongs for looping.
+    items.forEach((item, index) => {
       const card = document.createElement('div'); card.className = 'floating-krathong-card';
       card.style.setProperty('--float-delay', `${index * -2.4}s`);
       card.innerHTML = `<span class="float-flower">${item.krathong_style === 'jasmine' ? '✽' : item.krathong_style === 'marigold' ? '✺' : '✿'}</span><span class="float-candle">☼</span><span class="float-name"></span>`;
