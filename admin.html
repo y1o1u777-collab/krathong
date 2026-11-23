@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#11142c">
+  <title>Private wishes | A little sky of our own</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script><script src="admin.js" defer></script>
+</head>
+<body>
+  <main class="admin-shell">
+    <a class="back-link" href="./">← กลับไปยังคืนลอยกระทง</a>
+    <section id="loginPanel" class="admin-card login-card">
+      <div class="admin-moon">☾</div>
+      <p class="eyebrow">PRIVATE CORNER</p><h1>พื้นที่ของเจ้าของ</h1>
+      <p class="intro">เข้าสู่ระบบเพื่ออ่านคำอธิษฐานที่ถูกฝากไว้<br>ข้อมูลส่วนนี้มีไว้สำหรับเจ้าของเว็บไซต์เท่านั้น</p>
+      <form id="loginForm">
+        <label for="email">อีเมล</label><input id="email" type="email" autocomplete="username" required>
+        <label for="password">รหัสผ่าน</label><input id="password" type="password" autocomplete="current-password" required>
+        <button class="admin-button" type="submit" id="loginButton">เข้าสู่ระบบ</button>
+      </form>
+      <p id="loginStatus" class="status" role="status" aria-live="polite"></p>
+    </section>
+    <section id="wishesPanel" class="admin-card wishes-card hidden">
+      <div class="wishes-header"><div><p class="eyebrow">A LITTLE SKY OF OUR OWN</p><h1>คำอธิษฐานที่ถูกฝากไว้</h1><p class="intro">เก็บรักษาทุกข้อความด้วยความอ่อนโยน</p></div><button id="logoutButton" class="logout-button">ออกจากระบบ</button></div>
+      <div class="summary-row"><span id="wishCount">0 ข้อความ</span><button id="refreshButton" class="refresh-button">↻ รีเฟรช</button></div>
+      <p id="listStatus" class="status" role="status" aria-live="polite"></p>
+      <div id="wishList" class="wish-list"></div>
+    </section>
+    <p class="admin-footnote">A little sky · a private place for wishes</p>
+  </main>
+</body>
+</html>
