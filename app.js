@@ -169,7 +169,7 @@
     if (!items.length) { container.textContent = 'ยังไม่มีใครลอยกระทง'; return; }
     // Gallery uses one visible boat per database row. Movement is per-card, so no clone duplicates.
     const isGallery = container.id === 'galleryTrack';
-    const loopItems = isGallery ? items : (['floatingTrack', 'homeRiverTrack'].includes(container.id) ? [...items, ...items] : items);
+    const loopItems = isGallery ? items : (container.id === 'floatingTrack' ? [...items, ...items] : items);
     loopItems.forEach((item, index) => {
       const card = document.createElement('div'); card.className = 'floating-krathong-card';
       card.style.setProperty('--float-delay', `${index * -2.4}s`);
