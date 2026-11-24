@@ -89,3 +89,12 @@
 @keyframes galleryCurrentEnhanced{from{background-position:0 0,0 0}to{background-position:0 100px,150px 0}}
 @keyframes gallerySheenEnhanced{from{transform:translateX(-8%) skewX(-9deg);opacity:.2}to{transform:translateX(8%) skewX(-9deg);opacity:.55}}
 @media(max-width:560px){.gallery-river{height:320px;min-height:320px}.gallery-track .floating-krathong-card{width:118px!important;height:112px!important;left:-140px!important}.gallery-track .float-base{width:82px;height:25px}.gallery-track .float-leaf{width:27px}.gallery-track .float-flower{font-size:34px}}
+
+/* Requested update: keep exactly two community krathongs on the home river */
+#homeRiverTrack{gap:34px;}
+#homeRiverTrack .floating-krathong-card{transform-origin:center;}
+/* Gallery current: multiple moving wave layers and reflected moonlight */
+.gallery-river{background:linear-gradient(180deg,#41658a 0%,#31577e 22%,#214669 50%,#153858 78%,#102c49 100%),radial-gradient(ellipse at 50% 50%,rgba(126,190,230,.1),transparent 70%);}
+.gallery-water-lines{background:repeating-linear-gradient(180deg,transparent 0 16px,rgba(210,233,255,.13) 17px,transparent 20px),repeating-linear-gradient(90deg,transparent 0 70px,rgba(255,220,175,.06) 72px,transparent 75px);animation:galleryCurrentEnhanced 5.5s linear infinite;}
+.gallery-river .gallery-track .floating-krathong-card{animation:gallerySailEnhanced var(--sail-duration,48s) linear var(--sail-delay,0s) infinite,galleryBobEnhanced 3.8s ease-in-out var(--float-delay,0s) infinite!important;}
+@media(prefers-reduced-motion:reduce){.gallery-water-lines,.gallery-river:after,.gallery-track .floating-krathong-card{animation-duration:20s!important}}

@@ -192,7 +192,7 @@
     const riverTrack = $('homeRiverTrack');
     if (!riverTrack || !supabaseClient) return;
     const { data, error } = await supabaseClient.from('floating_krathongs').select('from_name,krathong_style,created_at').order('created_at', { ascending: false }).limit(24);
-    if (!error && data) renderFloatingKrathongs(riverTrack, data);
+    if (!error && data) renderFloatingKrathongs(riverTrack, data.slice(0, 2));
   }
   async function loadGallery() {
     const track = $('galleryTrack');
