@@ -152,3 +152,52 @@
 .success-river-track .floating-boat-art{transform:scale(.78);transform-origin:top center}
 @media(max-width:560px){.gallery-river{height:340px;min-height:300px}.gallery-track .floating-krathong-card{width:120px!important;height:120px!important;left:-132px!important}.gallery-track .floating-boat-art{transform:scale(.84);transform-origin:top left}.community-river-track .floating-krathong-card{width:100px!important;height:90px!important}.community-river-track .floating-boat-art{transform:scale(.68);transform-origin:top left}.float-name{font-size:10px}}
 @media(prefers-reduced-motion:reduce){.home-current,.gallery-current-bands span,.gallery-water-lines,.gallery-river:after,.community-river-track .floating-krathong-card,.gallery-track .floating-krathong-card,.floating-boat-art,.float-flame{animation-duration:30s!important}}
+
+/* Complete krathong ornament set shared by Home and Gallery */
+.floating-krathong-card{overflow:visible!important}
+.floating-boat-art{position:relative;isolation:isolate;width:145px;height:140px;overflow:visible;transform-origin:50% 70%;animation:krathongBob 3.8s ease-in-out var(--float-delay,0s) infinite}
+.float-water-shadow{z-index:0;bottom:11px;left:17px;right:17px;height:13px;background:radial-gradient(ellipse,rgba(1,12,27,.52),rgba(2,16,33,.08) 72%,transparent 100%);filter:blur(5px)}
+.float-base{z-index:3;bottom:19px;width:108px;height:31px;border-radius:8px 8px 30px 30px;background:linear-gradient(180deg,#e8d39e 0%,#c5a36a 36%,#a27b4b 72%,#72583b 100%);clip-path:polygon(0 0,100% 0,87% 68%,72% 94%,28% 94%,13% 68%);box-shadow:inset 0 2px 2px rgba(255,250,226,.62),inset 0 -4px 7px rgba(64,43,25,.23),0 7px 13px rgba(0,0,0,.2)}
+.float-rim{z-index:1;left:4px;right:4px;top:1px;height:5px;border-radius:50%;background:linear-gradient(90deg,#83975f,#e0d19b,#899b62);box-shadow:0 1px 3px rgba(37,49,27,.35)}
+.float-hull-seam{position:absolute;left:18px;right:18px;bottom:8px;height:1px;background:rgba(255,237,187,.5);border-radius:50%}
+.float-leaf{z-index:4;bottom:40px;width:34px;height:23px;border-radius:100% 0 100% 0;background:linear-gradient(140deg,#d8e6a5 0%,#91aa6c 55%,#5f7c50 100%);box-shadow:0 2px 5px rgba(12,34,20,.2),0 0 10px rgba(174,207,126,.2)}
+.float-leaf-left{left:17px;transform:rotate(-38deg)}
+.float-leaf-right{right:17px;transform:rotate(72deg) scaleX(-1)}
+.float-leaf-front-left{left:32px;bottom:34px;width:27px;height:18px;transform:rotate(-8deg);background:linear-gradient(140deg,#e0e7ae,#8ca76b)}
+.float-leaf-front-right{right:32px;bottom:34px;width:27px;height:18px;transform:rotate(88deg) scaleX(-1);background:linear-gradient(140deg,#e0e7ae,#8ca76b)}
+.float-leaf-back-left{left:39px;bottom:48px;width:24px;height:16px;transform:rotate(-65deg);opacity:.95}
+.float-leaf-back-right{right:39px;bottom:48px;width:24px;height:16px;transform:rotate(40deg) scaleX(-1);opacity:.95}
+.float-flower-mini{position:absolute;z-index:5;font-size:16px;line-height:1;color:var(--krathong-flower,#f4bfd8);text-shadow:0 0 8px rgba(255,225,238,.45)}
+.float-flower-mini.mini-a{left:41px;top:47px;transform:rotate(-15deg) scale(.86)}
+.float-flower-mini.mini-b{right:41px;top:47px;transform:rotate(15deg) scale(.86)}
+.float-flower-mini.mini-c{left:52px;top:60px;transform:scale(.72)}
+.float-flower-mini.mini-d{right:52px;top:60px;transform:scale(.72)}
+.float-flower{z-index:6;top:43px;left:50%;transform:translateX(-50%);font-size:34px;line-height:1;color:var(--krathong-flower,#ffd7e8);text-shadow:0 0 15px rgba(255,221,239,.72),0 2px 4px rgba(0,0,0,.22)}
+.float-candle{z-index:9;top:7px;left:50%;width:6px;height:20px;border-radius:3px;background:linear-gradient(90deg,#e6c98d,#fff5d9 48%,#d9b77b);box-shadow:0 0 13px 4px rgba(255,219,135,.3)}
+.float-flame{top:-10px;width:8px;height:11px;background:radial-gradient(circle at 50% 70%,#fff9d4 0 23%,#ffe19a 45%,#f7ad58 100%);box-shadow:0 0 13px 4px rgba(255,213,120,.72)}
+.float-incense{position:absolute;z-index:8;top:22px;width:2px;height:17px;border-radius:2px;background:linear-gradient(180deg,#6d4d37,#c99a67);box-shadow:0 0 2px rgba(255,228,177,.4)}
+.float-incense:before{content:"";position:absolute;top:-3px;left:-1px;width:4px;height:4px;border-radius:50%;background:#ffd18b;box-shadow:0 0 6px 2px rgba(255,197,119,.6)}
+.float-incense:after{content:"";position:absolute;top:-12px;left:-3px;width:8px;height:10px;border-top:1px solid rgba(224,231,243,.52);border-radius:50%;transform:rotate(-28deg);opacity:.6}
+.incense-left{left:48px;transform:rotate(-8deg)}
+.incense-center{left:71px;top:20px;height:13px;opacity:.85}
+.incense-right{right:48px;transform:rotate(8deg)}
+.float-name{z-index:12;bottom:1px;min-width:84px;max-width:122px;padding:4px 10px;border:1px solid rgba(255,241,199,.42);border-radius:3px 3px 13px 13px;background:linear-gradient(90deg,#a98953,#f0d7a0 50%,#a98953);color:#3c3024;font-size:10px;box-shadow:0 3px 8px rgba(0,0,0,.24)}
+.floating-krathong-card[data-style="lotus"]{--krathong-flower:#f4b9d4}
+.floating-krathong-card[data-style="jasmine"]{--krathong-flower:#fff2f5}
+.floating-krathong-card[data-style="marigold"]{--krathong-flower:#ffd36e}
+.floating-krathong-card[data-style="marigold"] .float-base{background:linear-gradient(180deg,#f0d38d 0%,#d5a74e 48%,#946c35 100%)}
+.floating-krathong-card[data-style="jasmine"] .float-base{background:linear-gradient(180deg,#e5dbb7 0%,#c6ad83 50%,#887656 100%)}
+
+/* Home river highlights and Gallery water caustics */
+.home-water-caustics{position:absolute;inset:-25% 26%;z-index:2;pointer-events:none;opacity:.55;background:linear-gradient(180deg,transparent,rgba(255,221,173,.22),rgba(190,220,255,.08),transparent);filter:blur(13px);animation:homeCausticShift 9s ease-in-out infinite alternate}
+.home-water-sparkles{position:absolute;inset:0;z-index:3;pointer-events:none}
+.home-water-sparkles i{position:absolute;width:3px;height:3px;border-radius:50%;background:#e7f4ff;box-shadow:0 0 7px 2px rgba(220,239,255,.45);animation:waterSparkle 3.8s ease-in-out infinite}
+.home-water-sparkles i:nth-child(1){left:14%;top:30%;animation-delay:-.8s}.home-water-sparkles i:nth-child(2){left:31%;top:61%;animation-delay:-2.1s}.home-water-sparkles i:nth-child(3){left:47%;top:42%;animation-delay:-1.3s}.home-water-sparkles i:nth-child(4){left:62%;top:72%;animation-delay:-2.8s}.home-water-sparkles i:nth-child(5){left:79%;top:35%;animation-delay:-.3s}.home-water-sparkles i:nth-child(6){left:88%;top:60%;animation-delay:-1.8s}.home-water-sparkles i:nth-child(7){left:25%;top:82%;animation-delay:-2.5s}
+@keyframes waterSparkle{0%,100%{opacity:.16;transform:scale(.65)}50%{opacity:.9;transform:scale(1.5)}}
+@keyframes homeCausticShift{from{transform:translateX(-12%) skewX(-7deg);opacity:.25}to{transform:translateX(12%) skewX(7deg);opacity:.65}}
+.gallery-water-caustics{position:absolute;inset:0;z-index:2;overflow:hidden;pointer-events:none}
+.gallery-water-caustics i{position:absolute;left:-30%;width:42%;height:12px;border-top:1px solid rgba(220,240,255,.3);border-radius:50%;filter:blur(.3px);animation:galleryCaustic 14s linear infinite}
+.gallery-water-caustics i:nth-child(1){top:17%;animation-delay:-3s}.gallery-water-caustics i:nth-child(2){top:36%;left:-45%;animation-duration:18s;animation-delay:-11s}.gallery-water-caustics i:nth-child(3){top:56%;left:-20%;animation-duration:16s;animation-delay:-8s}.gallery-water-caustics i:nth-child(4){top:73%;left:-40%;animation-duration:20s;animation-delay:-14s}.gallery-water-caustics i:nth-child(5){top:88%;left:-25%;animation-duration:17s;animation-delay:-6s}
+@keyframes galleryCaustic{from{transform:translateX(0) scaleX(.8);opacity:0}12%{opacity:.6}to{transform:translateX(360%) scaleX(1.35);opacity:0}}
+@media(max-width:560px){.floating-boat-art{transform-origin:top left}.float-name{font-size:8px;min-width:62px;padding:3px 6px}.float-flower{font-size:29px}.float-flower-mini{font-size:13px}.float-leaf{width:28px;height:18px}.float-leaf-front-left,.float-leaf-front-right{width:22px;height:15px}}
+@media(prefers-reduced-motion:reduce){.floating-boat-art,.float-flame,.home-water-caustics,.home-water-sparkles i,.gallery-water-caustics i{animation-duration:20s!important}}

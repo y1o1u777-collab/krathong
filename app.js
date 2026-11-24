@@ -195,10 +195,21 @@
       card.innerHTML = `
         <div class="floating-boat-art" aria-hidden="true">
           <span class="float-water-shadow"></span>
+          <span class="float-base"><i class="float-rim"></i><i class="float-hull-seam"></i></span>
           <span class="float-leaf float-leaf-left"></span>
           <span class="float-leaf float-leaf-right"></span>
-          <span class="float-base"><i class="float-rim"></i></span>
+          <span class="float-leaf float-leaf-front-left"></span>
+          <span class="float-leaf float-leaf-front-right"></span>
+          <span class="float-leaf float-leaf-back-left"></span>
+          <span class="float-leaf float-leaf-back-right"></span>
+          <span class="float-flower-mini mini-a">${flower}</span>
+          <span class="float-flower-mini mini-b">${flower}</span>
+          <span class="float-flower-mini mini-c">${flower}</span>
+          <span class="float-flower-mini mini-d">${flower}</span>
           <span class="float-flower">${flower}</span>
+          <span class="float-incense incense-left"><i></i></span>
+          <span class="float-incense incense-center"><i></i></span>
+          <span class="float-incense incense-right"><i></i></span>
           <span class="float-candle"><i class="float-flame"></i></span>
           <span class="float-name"></span>
         </div>`;
