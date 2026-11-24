@@ -133,13 +133,13 @@
         .limit(MAX_LOCAL_RECORDS);
       if (error) throw error;
 
-      const normaliseRow = (row, prefix = '') => ({
-        id: prefix + String(row.id),
+      const normaliseRow = (row, source = 'cloud') => ({
+        id: String(row.id),
         name: safeText(row.name, 30) || 'ไม่ระบุชื่อ',
         wish: safeText(row.wish, MAX_WISH),
         design: ['gold','lotus','jasmine','marigold','purple','nature','colorful','moon'].includes(row.design) ? row.design : 'gold',
         created_at: row.created_at || new Date().toISOString(),
-        source: prefix ? 'legacy-cloud' : 'cloud'
+        source
       });
       const remote = (data || []).filter(row => typeof row.wish === 'string').map(row => normaliseRow(row));
 
@@ -155,7 +155,7 @@
           if (!legacyResult.error) {
             remote.push(...(legacyResult.data || [])
               .filter(row => typeof row.wish === 'string')
-              .map(row => normaliseRow(row, 'legacy-')));
+              .map(row => normaliseRow(row, 'legacy-cloud')));
           } else {
             console.info('Krathong: legacy gallery table is not readable; existing data was left untouched.');
           }
@@ -165,8 +165,16 @@
       }
 
       const remoteIds = new Set(remote.map(item => item.id));
-      const pendingLocal = state.wishes.filter(item => item.pending === true && !remoteIds.has(item.id));
-      state.wishes = [...remote, ...pendingLocal].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      // Only records created after explicit public consent may sync automatically.
+      // Old offline records remain local until the owner decides what to do with them.
+      const pendingLocal = state.wishes.filter(item =>
+        item.pending === true && item.publicConsent === true && !remoteIds.has(item.id)
+      );
+      const retainedLocal = state.wishes.filter(item =>
+        !remoteIds.has(item.id) && !(item.pending === true && item.publicConsent === true)
+      );
+      state.wishes = [...remote, ...pendingLocal, ...retainedLocal]
+        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
       persistLocal();
       state.cloudReady = true;
       setConnection(true, 'เชื่อมต่อคลาวด์แล้ว');
@@ -375,7 +383,7 @@
     const localWish = {
       id: makeId(), name: safeText($('#wish-name').value, 30) || 'ไม่ระบุชื่อ',
       wish: wishText, design: ['gold','lotus','jasmine','marigold','purple','nature','colorful','moon'].includes($('input[name="design"]:checked').value) ? $('input[name="design"]:checked').value : 'gold',
-      created_at: new Date().toISOString(), pending: true, source: 'local'
+      created_at: new Date().toISOString(), pending: true, publicConsent: true, source: 'local'
     };
     state.wishes.unshift(localWish);
     persistLocal();
