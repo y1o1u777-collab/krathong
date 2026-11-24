@@ -26,28 +26,59 @@
     status('listStatus', 'กำลังโหลดคำอธิษฐาน…', true);
     $('refreshButton').disabled = true;
     try {
-      const { data, error } = await client.from('wishes')
+      const { data: privateData, error: privateError } = await client.from('wishes')
         .select('id, category, message, created_at, krathong_style')
         .order('created_at', { ascending: false }).limit(300);
-      if (error) throw error;
+      if (privateError) throw privateError;
+
+      // The public Gallery is additive. If its migration has not been run yet,
+      // the legacy private wishes dashboard still loads normally.
+      let galleryData = [];
+      const galleryTable = cfg.SUPABASE_TABLE || 'krathongs_gallery';
+      try {
+        const galleryResult = await client.from(galleryTable)
+          .select('id, name, wish, design, created_at')
+          .order('created_at', { ascending: false }).limit(300);
+        if (!galleryResult.error) galleryData = galleryResult.data || [];
+        else console.info('Gallery table is not available yet; private wishes remain accessible.');
+      } catch (galleryError) {
+        console.info('Gallery table is not available yet; private wishes remain accessible.');
+      }
+
+      const entries = [
+        ...(privateData || []).map(item => ({
+          category: item.category || 'คำอธิษฐาน',
+          message: item.message || '',
+          created_at: item.created_at,
+          visibility: 'private'
+        })),
+        ...galleryData.map(item => ({
+          category: 'Gallery · ' + (item.name || 'ไม่ระบุชื่อ'),
+          message: item.wish || '',
+          created_at: item.created_at,
+          visibility: 'public'
+        }))
+      ].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
       const list = $('wishList'); list.replaceChildren();
-      $('wishCount').textContent = `${data.length} ข้อความ`;
-      if (!data.length) {
+      $('wishCount').textContent = `${entries.length} ข้อความ · Gallery ${galleryData.length}`;
+      if (!entries.length) {
         list.appendChild(safeText('p', 'empty-state', 'ยังไม่มีคำอธิษฐานที่ถูกฝากไว้'));
       } else {
-        data.forEach(item => {
+        entries.forEach(item => {
           const card = document.createElement('article'); card.className = 'wish-item';
           const meta = document.createElement('div'); meta.className = 'wish-meta';
-          meta.append(safeText('span', '', `✦ ${item.category || 'คำอธิษฐาน'}`));
+          const visibilityLabel = item.visibility === 'public' ? '✦ Gallery สาธารณะ' : '🔒 ส่วนตัว';
+          meta.append(safeText('span', '', `${visibilityLabel} · ${item.category}`));
           meta.append(safeText('time', '', dateText(item.created_at)));
-          card.append(meta, safeText('p', 'wish-message', item.message || ''));
+          card.append(meta, safeText('p', 'wish-message', item.message));
           list.appendChild(card);
         });
       }
       status('listStatus', '', true);
     } catch (error) {
       console.error('Unable to load wishes:', error);
-      status('listStatus', 'ไม่สามารถอ่านข้อมูลได้ ตรวจสอบว่าเข้าสู่ระบบด้วยบัญชีเจ้าของเว็บไซต์แล้ว');
+      status('listStatus', 'ไม่สามารถอ่านข้อมูลส่วนตัวได้ ตรวจสอบว่าเข้าสู่ระบบด้วยบัญชีเจ้าของเว็บไซต์แล้ว');
     } finally { $('refreshButton').disabled = false; }
   }
 
