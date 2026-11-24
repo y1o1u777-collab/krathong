@@ -7,7 +7,7 @@
 - `index.html`, `styles.css`, `app.js` — หน้าเกม ฉากเทศกาล และเอฟเฟกต์ GSAP
 - `style.css` — ไฟล์สไตล์รุ่นก่อน (หน้าเว็บปัจจุบันโหลด `styles.css`)
 - `config.js` — URL และ public/anon key ของ Supabase
-- `admin.html`, `admin.css`, `admin.js` — หน้าเจ้าของเว็บไซต์สำหรับอ่านคำอธิษฐาน
+- `admin.html`, `admin.css`, `admin.js` — หน้าเจ้าของเว็บไซต์สำหรับอ่านคำอธิษฐานส่วนตัวและรายการใน Gallery
 - `supabase-setup.sql` — ตาราง `wishes` ส่วนตัวและ RLS สำหรับ Admin
 - `supabase-krathongs.sql` — migration เพิ่มตาราง `krathongs_gallery` สำหรับ Gallery สาธารณะ
 
@@ -66,7 +66,7 @@ window.APP_CONFIG = {
 4. ไปที่ Table Editor ตรวจว่ามี `krathongs_gallery` และ RLS เปิดอยู่
 5. กลับมาทดสอบหน้าเว็บ โดยต้องติ๊กช่องยินยอมก่อนปล่อยกระทง
 
-Migration นี้เพิ่มตารางและ policy สำหรับ Gallery โดยไม่แก้ไขหรือลบ `wishes` หรือ `krathongs` เดิม ตาราง Gallery เปิดให้อ่านเฉพาะรายการที่ส่งเข้าตารางนี้ และไม่มีสิทธิ์ UPDATE/DELETE สำหรับ public API
+Migration นี้เพิ่มตารางและ policy สำหรับ Gallery โดยไม่แก้ไขหรือลบ `wishes` หรือ `krathongs` เดิม ตาราง Gallery เปิดให้อ่านเฉพาะรายการที่ส่งเข้าตารางนี้ และไม่มีสิทธิ์ UPDATE/DELETE สำหรับ public API หน้า Admin จะแสดงรายการส่วนตัวจาก `wishes` ควบคู่กับกระทงสาธารณะจาก `krathongs_gallery`
 
 ถ้ามีตาราง `krathongs` จากเวอร์ชันก่อนและ policy เดิมอนุญาตให้อ่าน เว็บจะลองแสดงรายการเก่าด้วย แต่จะไม่ส่งข้อมูลใหม่ไปเขียนทับตารางเดิม การซิงก์รายการใหม่ใช้ `krathongs_gallery` เท่านั้น
 
