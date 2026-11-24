@@ -3,17 +3,18 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#071b2b">
+  <meta name="theme-color" content="#171431">
   <meta name="description" content="Krathong — a little light, a wish, and a river full of stories.">
   <title>Krathong — คืนที่คำอธิษฐานลอยไป</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=4">
   <script src="config.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script defer src="app.js"></script>
+  <script defer src="app.js?v=4"></script>
 </head>
 <body>
   <div class="ambient ambient--one" aria-hidden="true"></div>
@@ -94,8 +95,12 @@
         <textarea id="wish-text" name="wish" rows="3" maxlength="180" required placeholder="ขอให้ปีนี้เป็นปีที่ดี..." ></textarea>
         <div class="field-label design-label">เลือกกระทงของคุณ</div>
         <div class="design-options design-options--expanded"><label class="design-option design-option--gold is-selected"><input type="radio" name="design" value="gold" checked><span class="mini-krathong mini-krathong--gold"><i>✿</i></span><strong>แสงทอง</strong><small>อบอุ่นและเปล่งประกาย</small></label><label class="design-option design-option--lotus"><input type="radio" name="design" value="lotus"><span class="mini-krathong mini-krathong--lotus"><i>✿</i></span><strong>บัวชมพู</strong><small>อ่อนโยนและสดใส</small></label><label class="design-option design-option--jasmine"><input type="radio" name="design" value="jasmine"><span class="mini-krathong mini-krathong--jasmine"><i>❀</i></span><strong>มาลัยมะลิ</strong><small>ขาวสะอาดและสงบ</small></label><label class="design-option design-option--marigold"><input type="radio" name="design" value="marigold"><span class="mini-krathong mini-krathong--marigold"><i>✺</i></span><strong>ดาวเรือง</strong><small>สดใสและมีพลัง</small></label><label class="design-option design-option--purple"><input type="radio" name="design" value="purple"><span class="mini-krathong mini-krathong--purple"><i>✿</i></span><strong>ราตรีม่วง</strong><small>ดอกไม้ใต้แสงจันทร์</small></label><label class="design-option design-option--nature"><input type="radio" name="design" value="nature"><span class="mini-krathong mini-krathong--nature"><i>❋</i></span><strong>ธรรมชาติ</strong><small>ใบตองแบบเรียบง่าย</small></label><label class="design-option design-option--colorful"><input type="radio" name="design" value="colorful"><span class="mini-krathong mini-krathong--colorful"><i>✿</i></span><strong>สีสันแห่งแสง</strong><small>ดอกไม้หลากสี</small></label><label class="design-option design-option--moon"><input type="radio" name="design" value="moon"><span class="mini-krathong mini-krathong--moon"><i>✧</i></span><strong>จันทร์เจ้าขา</strong><small>ครีมและทองละมุน</small></label></div>
+        <label class="public-consent" for="public-consent">
+          <input id="public-consent" name="publicConsent" type="checkbox" required>
+          <span><strong>ยินยอมให้แสดงใน Gallery สาธารณะ</strong><small>ชื่อและคำอธิษฐานจะมองเห็นได้โดยผู้เข้าชมเว็บไซต์คนอื่น</small></span>
+        </label>
+        <p class="form-note">โปรดอย่าใส่รหัสผ่าน ที่อยู่ เบอร์โทรศัพท์ หรือข้อมูลส่วนตัวที่ไม่ต้องการเผยแพร่</p>
         <button class="primary-button submit-button" id="launch-button" type="submit"><span>จุดแสงและปล่อยกระทง</span><b>↗</b></button>
-        <p class="form-note">กระทงของคุณจะถูกเก็บไว้ในเครื่องนี้ และซิงก์ขึ้นคลาวด์เมื่อเชื่อมต่อฐานข้อมูลแล้ว</p>
       </form>
     </section>
   </div>
