@@ -1,6 +1,6 @@
 -- Krathong Dreamy & Magical: public Gallery table
 -- Run this ONCE in Supabase SQL Editor after preserving the existing setup.
--- This is additive: it does not alter or delete public.wishes or public.krathongs.
+-- This is additive: it does not alter or delete public.wishes or public.floating_krathongs.
 
 create table if not exists public.krathongs_gallery (
   id uuid primary key default gen_random_uuid(),
@@ -34,8 +34,8 @@ with check (
 );
 
 grant usage on schema public to anon, authenticated;
-grant select, insert on public.krathongs_gallery to anon, authenticated;
-revoke update, delete, truncate on public.krathongs_gallery from anon, authenticated;
+revoke all privileges on table public.krathongs_gallery from anon, authenticated;
+grant select, insert on table public.krathongs_gallery to anon, authenticated;
 
 -- Add Gallery to Realtime only when the publication exists and it is not yet included.
 do $$
