@@ -114,7 +114,7 @@
       if (error) throw error;
       const remote = (data || []).filter(row => typeof row.wish === 'string').map(row => ({
         id: String(row.id), name: safeText(row.name, 30) || 'ไม่ระบุชื่อ',
-        wish: safeText(row.wish, MAX_WISH), design: row.design === 'lotus' ? 'lotus' : 'gold',
+        wish: safeText(row.wish, MAX_WISH), design: ['gold','lotus','jasmine','marigold','purple','nature','colorful','moon'].includes(row.design) ? row.design : 'gold',
         created_at: row.created_at || new Date().toISOString(), source: 'cloud'
       }));
       const remoteIds = new Set(remote.map(item => item.id));
@@ -145,7 +145,7 @@
       if (error) throw error;
       const synced = {
         id: String(data.id), name: safeText(data.name, 30) || wish.name,
-        wish: safeText(data.wish, MAX_WISH), design: data.design === 'lotus' ? 'lotus' : 'gold',
+        wish: safeText(data.wish, MAX_WISH), design: ['gold','lotus','jasmine','marigold','purple','nature','colorful','moon'].includes(data.design) ? data.design : wish.design,
         created_at: data.created_at || wish.created_at, source: 'cloud'
       };
       state.wishes = state.wishes.map(item => item.id === wish.id ? synced : item);
@@ -204,7 +204,7 @@
   function createFloatingKrathong(item, index) {
     const boat = document.createElement('button');
     boat.type = 'button';
-    boat.className = `floating-krathong${item.design === 'lotus' ? ' design-lotus' : ''}`;
+    boat.className = `floating-krathong design-${item.design || 'gold'}`;
     boat.setAttribute('aria-label', `เปิดคำอธิษฐานของ ${item.name || 'ผู้ร่วมลอยกระทง'}`);
     const x = 13 + seededNumber(item.id, 1) * 74;
     const y = 38 + seededNumber(item.id, 2) * 48;
@@ -282,7 +282,7 @@
     button.querySelector('span').textContent = 'กำลังจุดแสง...';
     const localWish = {
       id: makeId(), name: safeText($('#wish-name').value, 30) || 'ไม่ระบุชื่อ',
-      wish: wishText, design: $('input[name="design"]:checked').value === 'lotus' ? 'lotus' : 'gold',
+      wish: wishText, design: $('input[name="design"]:checked').value,
       created_at: new Date().toISOString(), pending: true, source: 'local'
     };
     state.wishes.unshift(localWish);

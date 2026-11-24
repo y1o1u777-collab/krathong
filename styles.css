@@ -4,3 +4,31 @@ body.reduce-motion *,body.reduce-motion *:before,body.reduce-motion *:after{anim
 @media(max-width:900px){.hero-shell{grid-template-columns:1fr;gap:30px;padding:55px 30px 32px}.hero-copy{text-align:center}.hero-copy .eyebrow,.hero-actions{justify-content:center}.hero-description{margin-left:auto;margin-right:auto}.hero-footnote{margin-top:26px}.hero-art{width:min(100%,650px);height:430px;margin:auto}.feature-strip{margin-left:25px;margin-right:25px}.gallery-view{padding-left:25px;padding-right:25px}}
 @media(max-width:620px){.topbar{height:66px;padding:0 17px}.brand{font-size:11px;gap:6px}.brand-mark{font-size:20px}.nav-links{gap:13px}.nav-link{font-size:10px}.connection-pill{font-size:0;padding:8px}.connection-pill i{width:7px;height:7px}.topbar-right{gap:8px}.icon-button{width:31px;height:31px}.hero-shell{padding:45px 20px 24px}.hero-copy h1{font-size:39px;margin-top:22px}.hero-description{font-size:12px}.hero-actions{gap:16px;flex-wrap:wrap}.primary-button{font-size:11px;padding:12px 14px;gap:15px}.hero-footnote{font-size:9px}.hero-art{height:365px;border-radius:48% 48% 7px 7px / 40% 40% 7px 7px}.moon{width:66px;height:66px;top:60px}.moon-halo{top:12px}.hero-krathong{top:59%;scale:.8}.hero-krathong--two{top:67%;scale:.59}.feature-strip{margin:0 16px 24px;padding:17px 15px;gap:11px}.feature-item{gap:8px}.feature-icon{font-size:21px;width:21px}.feature-item strong{font-size:9px}.feature-item small{font-size:8px;line-height:1.5}.feature-divider{height:30px}.footer{padding:0 17px;font-size:8px}.footer>span:nth-child(2){display:none}.gallery-view{padding:38px 16px 25px}.section-heading{align-items:center}.section-heading h2{font-size:32px}.section-heading p{font-size:10px}.gallery-river{height:420px}.gallery-moon{width:48px;height:48px;right:10%;top:25px}.gallery-empty strong{font-size:14px}.dialog{padding:31px 22px 24px}.dialog h2{font-size:27px}.design-options{gap:7px}.design-option{grid-template-columns:48px 1fr;padding:8px;column-gap:7px}.mini-krathong{width:47px}.design-option strong{font-size:10px}.design-option small{font-size:8px}.launch-message{margin-top:29vh}.launch-message h2{font-size:27px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+
+/* --- Krathong redesign: realistic leaf boats + expanded design collection --- */
+.design-options--expanded{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.design-options--expanded .design-option{min-height:82px;grid-template-columns:68px 1fr;column-gap:12px;border-radius:13px;padding:12px;background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(4,19,30,.42));}
+.design-options--expanded .mini-krathong{width:64px;height:54px;background:transparent}
+.design-options--expanded .mini-krathong:before{width:52px;height:21px;bottom:10px;clip-path:polygon(0 0,100% 0,82% 80%,50% 100%,18% 80%);border-radius:0}
+.design-options--expanded .mini-krathong:after{content:'❀';position:absolute;top:2px;font-size:20px;color:var(--flower,#f4d69a);text-shadow:0 0 12px var(--flower,#f4d69a)}
+.design-options--expanded .mini-krathong i{font-size:12px;color:var(--flower,#f4d69a);z-index:2}
+.design-option--jasmine{--flower:#f5f0dc}.design-option--marigold{--flower:#f7a942}.design-option--purple{--flower:#c8a9ff}.design-option--nature{--flower:#a9e0cb}.design-option--colorful{--flower:#f4a7cc}.design-option--moon{--flower:#f4d69a}
+.design-option--jasmine .mini-krathong:before{background:linear-gradient(#e9e4c8,#8b8c69)}
+.design-option--marigold .mini-krathong:before{background:linear-gradient(#f4b84e,#94642d)}
+.design-option--purple .mini-krathong:before{background:linear-gradient(#b9a2dc,#69517e)}
+.design-option--nature .mini-krathong:before{background:linear-gradient(#9abf83,#426e4b)}
+.design-option--colorful .mini-krathong:before{background:linear-gradient(#e6a3c4,#966082)}
+.design-option--moon .mini-krathong:before{background:linear-gradient(#e8d6ad,#a27a4b)}
+.floating-krathong{width:145px;height:100px;filter:drop-shadow(0 15px 18px rgba(0,0,0,.3))}
+.floating-krathong .mini-boat{width:120px;height:34px;bottom:5px;border-radius:7px 7px 55% 55%;clip-path:polygon(0 0,100% 0,82% 85%,50% 100%,18% 85%);background:linear-gradient(180deg,#b5a06b,#516f4c);border:1px solid rgba(240,220,160,.65);box-shadow:inset 0 6px 9px rgba(255,239,193,.23)}
+.floating-krathong .mini-petal{width:31px;height:36px;bottom:24px;background:linear-gradient(135deg,#d8bd7e,#73956c)}
+.floating-krathong.design-lotus .mini-petal{background:linear-gradient(135deg,#f1c4d4,#c67e9b)}
+.floating-krathong.design-jasmine .mini-petal{background:linear-gradient(135deg,#fff8e8,#c5d3a0)}
+.floating-krathong.design-marigold .mini-petal{background:linear-gradient(135deg,#ffd166,#e18b35)}
+.floating-krathong.design-purple .mini-petal{background:linear-gradient(135deg,#d8c4ff,#8c72bd)}
+.floating-krathong.design-nature .mini-petal{background:linear-gradient(135deg,#bdd79a,#63885b)}
+.floating-krathong.design-colorful .mini-petal{background:linear-gradient(135deg,#f5c3d4,#c78ab7)}
+.floating-krathong.design-moon .mini-petal{background:linear-gradient(135deg,#fff0c7,#c3a66e)}
+.floating-krathong:after{content:'';position:absolute;bottom:0;left:50%;width:138px;height:15px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(ellipse,rgba(255,203,128,.28),transparent 70%);filter:blur(5px)}
+.gallery-river{background-image:radial-gradient(ellipse at 50% 10%,rgba(242,203,145,.12),transparent 38%),linear-gradient(180deg,#0d2a3e 0%,#164155 43%,#0b3041 70%,#051927 100%)}
+@media(max-width:600px){.design-options--expanded{grid-template-columns:1fr}.design-options--expanded .design-option{min-height:76px}}
