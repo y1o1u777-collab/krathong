@@ -68,3 +68,24 @@
 @keyframes galleryCurrent{from{background-position:0 0,0 0}to{background-position:0 90px,120px 0}}
 @keyframes currentSheen{from{transform:translateX(-10%) skewX(-8deg);opacity:.18}to{transform:translateX(10%) skewX(-8deg);opacity:.55}}
 @media(max-width:560px){.gallery-river{height:300px;min-height:300px}.gallery-track{gap:34px;padding:0 18px}.gallery-track .floating-krathong-card{width:120px;height:112px}.gallery-track .float-base{width:80px}.gallery-track .float-leaf{width:26px}.gallery-track .float-flower{font-size:34px}}
+
+
+/* Gallery: single database row = one boat; each boat sails across the current */
+.gallery-river{position:relative;overflow:hidden;isolation:isolate;height:min(58vh,440px);min-height:300px;background:linear-gradient(180deg,#41658a 0%,#31577e 22%,#214669 50%,#153858 78%,#102c49 100%);border:1px solid rgba(190,222,255,.22);box-shadow:inset 0 18px 60px rgba(203,229,255,.10),inset 0 -35px 70px rgba(5,20,42,.28),0 20px 42px rgba(0,0,0,.22)}
+.gallery-river:before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at 50% 4%,rgba(255,231,185,.22),transparent 45%),linear-gradient(90deg,rgba(7,24,45,.22),transparent 24%,transparent 76%,rgba(7,24,45,.22))}
+.gallery-water-glow{position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse at 50% 20%,rgba(255,227,190,.22),transparent 40%),radial-gradient(ellipse at 50% 75%,rgba(108,190,226,.12),transparent 60%)}
+.gallery-water-lines{position:absolute;inset:-20%;z-index:1;pointer-events:none;opacity:.85;background:repeating-linear-gradient(180deg,transparent 0 21px,rgba(210,233,255,.11) 22px,transparent 25px),repeating-linear-gradient(90deg,transparent 0 90px,rgba(255,220,175,.055) 92px,transparent 95px);animation:galleryCurrentEnhanced 8s linear infinite}
+.gallery-river:after{content:"";position:absolute;inset:-20% -50%;z-index:1;pointer-events:none;background:repeating-linear-gradient(180deg,transparent 0 42px,rgba(194,225,255,.08) 43px,transparent 47px);transform:skewX(-9deg);animation:gallerySheenEnhanced 12s linear infinite}
+.gallery-track{position:absolute!important;inset:0!important;display:block!important;width:100%!important;height:100%!important;padding:0!important;margin:0!important;overflow:hidden!important;z-index:3!important;transform:none!important;animation:none!important}
+.gallery-track .floating-krathong-card{position:absolute!important;left:-160px!important;top:var(--sail-y,25%)!important;width:138px!important;height:132px!important;display:block!important;animation:gallerySailEnhanced var(--sail-duration,48s) linear var(--sail-delay,0s) infinite, galleryBobEnhanced 3.8s ease-in-out var(--float-delay,0s) infinite!important;filter:drop-shadow(0 10px 12px rgba(0,0,0,.32));}
+.gallery-track .float-base{position:absolute;left:50%;transform:translateX(-50%);bottom:22px;width:102px;height:29px;border-radius:2px 2px 30px 30px;background:linear-gradient(180deg,#e3c88d,#bd985b 55%,#79633f);box-shadow:inset 0 2px 2px rgba(255,248,222,.38),0 4px 12px rgba(0,0,0,.18);clip-path:polygon(0 0,100% 0,78% 100%,22% 100%)}
+.gallery-track .float-leaf{position:absolute;bottom:40px;width:35px;height:25px;border-radius:100% 0 100% 0;background:linear-gradient(140deg,#c5db98,#76965e);box-shadow:0 0 12px rgba(174,207,126,.2)}
+.gallery-track .float-leaf-left{left:24px;transform:rotate(-34deg)}.gallery-track .float-leaf-right{right:24px;transform:rotate(68deg)}
+.gallery-track .float-flower{position:absolute;top:18px;left:50%;transform:translateX(-50%);font-size:40px;color:#ffd7e8;text-shadow:0 0 18px rgba(255,221,239,.65),0 2px 4px rgba(0,0,0,.25)}
+.gallery-track .float-candle{position:absolute;top:6px;left:50%;transform:translateX(-50%);font-size:15px;color:#ffedb0;text-shadow:0 0 15px #ffdc87,0 0 4px #fff4d0}
+.gallery-track .float-name{position:absolute;bottom:4px;left:50%;transform:translateX(-50%);z-index:5;min-width:90px;max-width:130px;font-size:11px;padding:5px 12px;background:linear-gradient(90deg,#b29a68,#ecd5a2,#b29a68);box-shadow:0 4px 10px rgba(0,0,0,.22)}
+@keyframes gallerySailEnhanced{from{transform:translateX(0)}to{transform:translateX(calc(100vw + 260px))}}
+@keyframes galleryBobEnhanced{0%,100%{translate:0 0;rotate:-1deg}50%{translate:0 -8px;rotate:1.2deg}}
+@keyframes galleryCurrentEnhanced{from{background-position:0 0,0 0}to{background-position:0 100px,150px 0}}
+@keyframes gallerySheenEnhanced{from{transform:translateX(-8%) skewX(-9deg);opacity:.2}to{transform:translateX(8%) skewX(-9deg);opacity:.55}}
+@media(max-width:560px){.gallery-river{height:320px;min-height:320px}.gallery-track .floating-krathong-card{width:118px!important;height:112px!important;left:-140px!important}.gallery-track .float-base{width:82px;height:25px}.gallery-track .float-leaf{width:27px}.gallery-track .float-flower{font-size:34px}}

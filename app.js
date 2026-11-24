@@ -167,10 +167,17 @@
   function renderFloatingKrathongs(container, items) {
     container.innerHTML = '';
     if (!items.length) { container.textContent = 'ยังไม่มีใครลอยกระทง'; return; }
-    const loopItems = ['floatingTrack', 'homeRiverTrack', 'galleryTrack'].includes(container.id) ? [...items, ...items] : items;
+    // Gallery uses one visible boat per database row. Movement is per-card, so no clone duplicates.
+    const isGallery = container.id === 'galleryTrack';
+    const loopItems = isGallery ? items : (['floatingTrack', 'homeRiverTrack'].includes(container.id) ? [...items, ...items] : items);
     loopItems.forEach((item, index) => {
       const card = document.createElement('div'); card.className = 'floating-krathong-card';
       card.style.setProperty('--float-delay', `${index * -2.4}s`);
+      if (isGallery) {
+        card.style.setProperty('--sail-delay', `${index * -7.5}s`);
+        card.style.setProperty('--sail-duration', `${42 + (index % 4) * 5}s`);
+        card.style.setProperty('--sail-y', `${14 + (index % 5) * 15}%`);
+      }
       card.innerHTML = `<span class="float-leaf float-leaf-left"></span><span class="float-leaf float-leaf-right"></span><span class="float-base"></span><span class="float-flower">${item.krathong_style === 'jasmine' ? '✽' : item.krathong_style === 'marigold' ? '✺' : '✿'}</span><span class="float-candle">☼</span><span class="float-name"></span>`;
       card.querySelector('.float-name').textContent = item.from_name || 'ผู้ไม่ระบุชื่อ';
       container.appendChild(card);
