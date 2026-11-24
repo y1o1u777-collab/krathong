@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const CONFIG = window.KRATHONG_CONFIG || {};
+  const CONFIG = window.APP_CONFIG || window.KRATHONG_CONFIG || {};
   const STORAGE_KEY = CONFIG.LOCAL_STORAGE_KEY || 'krathong-wishes-v2';
   const MAX_WISH = Number(CONFIG.MAX_WISH_LENGTH) || 180;
   const MAX_LOCAL_RECORDS = 200;
@@ -15,6 +15,8 @@
     cloudReady: false,
     currentView: 'home',
     lastCreated: null,
+    realtimeChannel: null,
+    refreshTimer: null,
     reduceMotion: window.matchMedia?.('(prefers-reduced-motion: reduce)').matches || false
   };
 
@@ -47,7 +49,7 @@
   function makeId() {
     return (window.crypto && typeof crypto.randomUUID === 'function')
       ? crypto.randomUUID()
-      : `local-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+      : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => { const r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 3 | 8)).toString(16); });
   }
 
   function safeText(value, max = 180) {
@@ -93,8 +95,9 @@
     try {
       state.supabase = window.supabase.createClient(url, key, {
         auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
-        global: { headers: { 'X-Client-Info': 'krathong-web/2.0' } }
+        global: { headers: { 'X-Client-Info': 'krathong-web/3.0' } }
       });
+      subscribeRealtime();
       refreshFromCloud();
     } catch (error) {
       console.error('Krathong: could not initialise cloud client.', error);
@@ -102,9 +105,26 @@
     }
   }
 
+  function subscribeRealtime() {
+    if (!state.supabase || typeof state.supabase.channel !== 'function') return;
+    const table = safeText(CONFIG.SUPABASE_TABLE || 'krathongs_gallery', 64);
+    try {
+      state.realtimeChannel = state.supabase
+        .channel('krathongs-gallery-live')
+        .on('postgres_changes', { event: '*', schema: 'public', table }, () => {
+          if (document.hidden) return;
+          window.clearTimeout(state.refreshTimer);
+          state.refreshTimer = window.setTimeout(() => refreshFromCloud(), 300);
+        })
+        .subscribe();
+    } catch (error) {
+      console.info('Krathong: Realtime is unavailable; Gallery can still refresh on reload.', error);
+    }
+  }
+
   async function refreshFromCloud() {
     if (!state.supabase) return;
-    const table = safeText(CONFIG.SUPABASE_TABLE || 'krathongs', 64);
+    const table = safeText(CONFIG.SUPABASE_TABLE || 'krathongs_gallery', 64);
     try {
       const { data, error } = await state.supabase
         .from(table)
@@ -138,10 +158,10 @@
 
   async function saveToCloud(wish) {
     if (!state.supabase) return { ok: false, reason: 'offline' };
-    const table = safeText(CONFIG.SUPABASE_TABLE || 'krathongs', 64);
+    const table = safeText(CONFIG.SUPABASE_TABLE || 'krathongs_gallery', 64);
     try {
-      const payload = { name: wish.name, wish: wish.wish, design: wish.design };
-      const { data, error } = await state.supabase.from(table).insert(payload).select('id, name, wish, design, created_at').single();
+      const payload = { id: wish.id, name: wish.name, wish: wish.wish, design: wish.design };
+      const { data, error } = await state.supabase.from(table).upsert(payload, { onConflict: 'id' }).select('id, name, wish, design, created_at').single();
       if (error) throw error;
       const synced = {
         id: String(data.id), name: safeText(data.name, 30) || wish.name,
@@ -214,7 +234,16 @@
     boat.style.top = `${y}%`;
     boat.style.animationDelay = `${delay}s`;
     boat.style.setProperty('--float-duration', `${duration}s`);
-    if (state.reduceMotion) boat.style.animation = 'none';
+    if (state.reduceMotion) {
+      boat.style.animation = 'none';
+    } else if (window.gsap) {
+      boat.style.animation = 'none';
+      window.gsap.set(boat, { xPercent: -50, yPercent: -50 });
+      window.gsap.to(boat, {
+        x: 18 + (index % 3) * 5, y: -9 - (index % 2) * 3, rotation: 4,
+        duration, delay: Math.abs(delay % duration), repeat: -1, yoyo: true, ease: 'sine.inOut'
+      });
+    }
     const hull = document.createElement('span'); hull.className = 'mini-boat';
     boat.append(hull);
     for (let i = 0; i < 6; i++) { const petal = document.createElement('span'); petal.className = 'mini-petal'; boat.append(petal); }
@@ -227,6 +256,7 @@
     const collection = $('#floating-collection');
     const empty = $('#gallery-empty');
     if (!collection || !empty) return;
+    if (window.gsap) window.gsap.killTweensOf([...collection.children]);
     collection.replaceChildren();
     const ordered = [...state.wishes].sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
     const visible = ordered.slice(-MAX_RENDERED);
@@ -264,6 +294,16 @@
       raft.style.display = 'none';
       finish.style.animation = 'none';
       finish.style.opacity = '1';
+    } else if (window.gsap) {
+      const gsap = window.gsap;
+      raft.style.display = '';
+      raft.style.animation = 'none';
+      gsap.killTweensOf([raft, finish]);
+      gsap.fromTo(raft, { autoAlpha: 0, x: -10, y: 30, scale: .82 },
+        { autoAlpha: 1, x: 0, y: 0, scale: 1, duration: .7, ease: 'power3.out' });
+      gsap.to(raft, { x: 118, y: -65, scale: .58, duration: 3.1, delay: .3, ease: 'power1.inOut' });
+      gsap.fromTo(finish, { autoAlpha: 0, y: 10 },
+        { autoAlpha: 1, y: 0, duration: .55, delay: 2.8, ease: 'power2.out' });
     } else {
       raft.style.display = '';
       finish.style.animation = 'finish-show .6s 3.2s forwards';
@@ -274,6 +314,7 @@
     event.preventDefault();
     const form = event.currentTarget;
     const wishText = safeText($('#wish-text').value, MAX_WISH);
+    if (!$('#public-consent')?.checked) { toast('กรุณายืนยันก่อนเผยแพร่กระทงใน Gallery', 'error'); return; }
     if (!wishText) { $('#wish-text').focus(); toast('เขียนคำอธิษฐานก่อนปล่อยกระทงนะ'); return; }
     if (wishText.length > MAX_WISH) { toast(`คำอธิษฐานยาวได้ไม่เกิน ${MAX_WISH} ตัวอักษร`, 'error'); return; }
 
@@ -282,7 +323,7 @@
     button.querySelector('span').textContent = 'กำลังจุดแสง...';
     const localWish = {
       id: makeId(), name: safeText($('#wish-name').value, 30) || 'ไม่ระบุชื่อ',
-      wish: wishText, design: $('input[name="design"]:checked').value,
+      wish: wishText, design: ['gold','lotus','jasmine','marigold','purple','nature','colorful','moon'].includes($('input[name="design"]:checked').value) ? $('input[name="design"]:checked').value : 'gold',
       created_at: new Date().toISOString(), pending: true, source: 'local'
     };
     state.wishes.unshift(localWish);
@@ -353,6 +394,10 @@
       document.body.classList.toggle('reduce-motion', state.reduceMotion);
       $('#motion-toggle').classList.toggle('is-on', state.reduceMotion);
       $('#motion-toggle').setAttribute('aria-pressed', String(state.reduceMotion));
+      if (window.gsap) {
+        if (state.reduceMotion) window.gsap.globalTimeline.pause();
+        else window.gsap.globalTimeline.resume();
+      }
       toast(state.reduceMotion ? 'ลดการเคลื่อนไหวแล้ว' : 'เปิดเอฟเฟกต์เคลื่อนไหวแล้ว');
       if (state.currentView === 'gallery') renderGallery();
     });
@@ -369,6 +414,12 @@
     bindEvents();
     renderCounts();
     renderGallery();
+    if (window.gsap && !state.reduceMotion) {
+      window.gsap.from('#home-view .hero-copy > *, #home-view .hero-art', {
+        autoAlpha: 0, y: 16, duration: .8, stagger: .1, delay: .1, ease: 'power3.out',
+        clearProps: 'opacity,visibility,transform'
+      });
+    }
     initSupabase();
   }
 
