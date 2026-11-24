@@ -143,24 +143,29 @@
       });
       const remote = (data || []).filter(row => typeof row.wish === 'string').map(row => normaliseRow(row));
 
-      // Keep showing legacy public records where the old table still exists and
-      // its current RLS policy already allows reading. Never write to this table.
-      const legacyTable = safeText(CONFIG.LEGACY_SUPABASE_TABLE || '', 64);
-      if (legacyTable && legacyTable !== table) {
+      // Preserve boats stored by the original floating_krathongs table.
+      // That table contains no wish text; never join or expose private public.wishes.
+      const legacyFloatingTable = safeText(CONFIG.LEGACY_FLOATING_TABLE || '', 64);
+      if (legacyFloatingTable && legacyFloatingTable !== table) {
         try {
-          const legacyResult = await state.supabase.from(legacyTable)
-            .select('id, name, wish, design, created_at')
+          const legacyResult = await state.supabase.from(legacyFloatingTable)
+            .select('id, from_name, krathong_style, created_at')
             .order('created_at', { ascending: false })
             .limit(MAX_LOCAL_RECORDS);
           if (!legacyResult.error) {
-            remote.push(...(legacyResult.data || [])
-              .filter(row => typeof row.wish === 'string')
-              .map(row => normaliseRow(row, 'legacy-cloud')));
+            remote.push(...(legacyResult.data || []).map(row => ({
+              id: `legacy-floating-${String(row.id)}`,
+              name: safeText(row.from_name, 30) || 'ผู้ไม่ระบุชื่อ',
+              wish: 'กระทงจากเวอร์ชันก่อน (ไม่มีข้อความคำอธิษฐานในตารางเดิม)',
+              design: ['gold','lotus','jasmine','marigold','purple','nature','colorful','moon'].includes(row.krathong_style) ? row.krathong_style : 'gold',
+              created_at: row.created_at || new Date().toISOString(),
+              source: 'legacy-floating'
+            })));
           } else {
-            console.info('Krathong: legacy gallery table is not readable; existing data was left untouched.');
+            console.info('Krathong: legacy floating table is not readable; existing data was left untouched.');
           }
         } catch (legacyError) {
-          console.info('Krathong: legacy gallery table is unavailable; existing data was left untouched.');
+          console.info('Krathong: legacy floating table is unavailable; existing data was left untouched.');
         }
       }
 
