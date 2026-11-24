@@ -42,11 +42,12 @@
         <div class="scene-stars" id="sceneStars"></div>
         <div class="distant-temple"><span></span><i></i><b></b></div>
         <div class="far-shore"></div>
-        <div class="river river-home"><div class="river-shimmer"></div><div class="community-river-track" id="homeRiverTrack" aria-label="กระทงของผู้คนที่ลอยอยู่บนแม่น้ำ"></div>
-          <div class="tiny-krathong krathong-one"><span class="tiny-flame"></span></div>
-          <div class="tiny-krathong krathong-two"><span class="tiny-flame"></span></div>
-          <div class="tiny-krathong krathong-three"><span class="tiny-flame"></span></div>
-          <div class="water-line line-one"></div><div class="water-line line-two"></div><div class="water-line line-three"></div>
+        <div class="river river-home" aria-label="สายน้ำยามค่ำคืน">
+          <div class="river-shimmer" aria-hidden="true"></div>
+          <div class="home-current home-current-one" aria-hidden="true"></div>
+          <div class="home-current home-current-two" aria-hidden="true"></div>
+          <div class="water-line line-one" aria-hidden="true"></div><div class="water-line line-two" aria-hidden="true"></div><div class="water-line line-three" aria-hidden="true"></div>
+          <div class="community-river-track" id="homeRiverTrack" aria-label="กระทงสองใบล่าสุดของผู้คนที่ลอยอยู่บนแม่น้ำ"></div>
         </div>
         <div class="scene-caption"><span>✧</span> let your little wish sail <span>✧</span></div>
       </div>
@@ -148,7 +149,13 @@
     <section id="galleryScreen" class="screen gallery-screen hidden" aria-labelledby="galleryTitle">
       <div class="section-heading"><button id="galleryBackButton" class="back-button" type="button" aria-label="กลับ">←</button><div><p class="eyebrow">A RIVER OF WISHES</p><h2 id="galleryTitle">กระทงที่ลอยอยู่</h2></div></div>
       <p class="gallery-subtitle">กระทงเล็ก ๆ จากผู้คนที่ฝากความหวังไว้ใต้ท้องฟ้าเดียวกัน</p>
-      <div id="galleryStatus" class="form-status" role="status"></div><div class="gallery-river"><div class="gallery-water-glow"></div><div class="gallery-water-lines"></div><div id="galleryTrack" class="gallery-track"></div></div>
+      <div id="galleryStatus" class="form-status" role="status" aria-live="polite"></div>
+      <div class="gallery-river" aria-label="แม่น้ำที่มีกระทงลอยไปตามกระแสน้ำ">
+        <div class="gallery-water-glow" aria-hidden="true"></div>
+        <div class="gallery-water-lines" aria-hidden="true"></div>
+        <div class="gallery-current-bands" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div id="galleryTrack" class="gallery-track" aria-label="กระทงที่ลอยอยู่ในแม่น้ำ"></div>
+      </div>
     </section>
   </main>
 

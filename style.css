@@ -98,3 +98,57 @@
 .gallery-water-lines{background:repeating-linear-gradient(180deg,transparent 0 16px,rgba(210,233,255,.13) 17px,transparent 20px),repeating-linear-gradient(90deg,transparent 0 70px,rgba(255,220,175,.06) 72px,transparent 75px);animation:galleryCurrentEnhanced 5.5s linear infinite;}
 .gallery-river .gallery-track .floating-krathong-card{animation:gallerySailEnhanced var(--sail-duration,48s) linear var(--sail-delay,0s) infinite,galleryBobEnhanced 3.8s ease-in-out var(--float-delay,0s) infinite!important;}
 @media(prefers-reduced-motion:reduce){.gallery-water-lines,.gallery-river:after,.gallery-track .floating-krathong-card{animation-duration:20s!important}}
+
+
+/* ---------------------------------------------------------------
+   FINAL RIVER SYSTEM
+   One database row = one krathong. Horizontal sailing and gentle bobbing
+   are applied to separate elements so the animations never overwrite.
+---------------------------------------------------------------- */
+.river-home{isolation:isolate}
+.home-current{position:absolute;z-index:2;left:-35%;width:170%;height:32px;pointer-events:none;border-top:1px solid rgba(202,231,255,.14);border-radius:50%;filter:blur(.2px)}
+.home-current-one{top:27px;animation:homeCurrentDrift 8s linear infinite}
+.home-current-two{top:91px;opacity:.55;animation:homeCurrentDrift 11s linear -3s infinite reverse}
+@keyframes homeCurrentDrift{from{transform:translateX(-7%)}to{transform:translateX(7%)}}
+.community-river-track{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;display:block!important;overflow:hidden!important;container-type:inline-size;z-index:5!important;animation:none!important;pointer-events:none}
+.community-river-track .floating-krathong-card{position:absolute!important;left:-112px!important;top:var(--sail-y,22%)!important;width:112px!important;height:100px!important;display:block!important;flex:none!important;animation:homeKrathongSail var(--sail-duration,32s) linear var(--sail-delay,0s) infinite!important;filter:drop-shadow(0 6px 8px rgba(0,0,0,.32))}
+@keyframes homeKrathongSail{from{transform:translate3d(0,0,0)}to{transform:translate3d(calc(100cqw + 125px),0,0)}}
+.community-river-track .floating-boat-art{transform:scale(.78);transform-origin:top center}
+.community-river-track .float-name{font-size:10px;min-width:68px;padding:4px 8px}
+
+.gallery-river{position:relative;overflow:hidden;isolation:isolate;container-type:inline-size;height:min(58vh,460px);min-height:320px;width:100%;border-radius:22px;border:1px solid rgba(190,222,255,.25);background:linear-gradient(180deg,#41658a 0%,#31577e 22%,#214669 52%,#173958 78%,#102b49 100%);box-shadow:inset 0 18px 58px rgba(203,229,255,.12),inset 0 -35px 70px rgba(5,20,42,.30),0 20px 42px rgba(0,0,0,.22)}
+.gallery-river:before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at 50% 0%,rgba(255,231,185,.22),transparent 45%),linear-gradient(90deg,rgba(7,24,45,.18),transparent 22%,transparent 78%,rgba(7,24,45,.18))}
+.gallery-river:after{content:"";position:absolute;inset:-15% -40%;z-index:1;pointer-events:none;background:repeating-linear-gradient(180deg,transparent 0 37px,rgba(194,225,255,.10) 38px,transparent 42px);transform:skewX(-9deg);animation:gallerySurfaceFlow 9s linear infinite}
+.gallery-water-glow{position:absolute!important;inset:0!important;z-index:0!important;pointer-events:none;background:radial-gradient(ellipse at 50% 16%,rgba(255,230,190,.25),transparent 42%),radial-gradient(ellipse at 50% 78%,rgba(97,176,221,.17),transparent 54%),linear-gradient(180deg,rgba(171,211,249,.08),transparent 42%,rgba(4,17,36,.18))}
+.gallery-water-lines{position:absolute!important;inset:-20%!important;z-index:1!important;pointer-events:none;opacity:.85;background:repeating-linear-gradient(180deg,transparent 0 18px,rgba(210,233,255,.12) 19px,transparent 22px),repeating-linear-gradient(90deg,transparent 0 78px,rgba(255,220,175,.06) 80px,transparent 84px);animation:galleryWaterFlow 6s linear infinite!important}
+.gallery-current-bands{position:absolute;inset:0;overflow:hidden;z-index:2;pointer-events:none}
+.gallery-current-bands span{position:absolute;left:-42%;width:70%;height:18px;border-top:1px solid rgba(210,234,255,.30);border-radius:50%;filter:blur(.5px);animation:currentBand 13s linear infinite}
+.gallery-current-bands span:nth-child(1){top:24%;animation-duration:12s}
+.gallery-current-bands span:nth-child(2){top:52%;left:-55%;opacity:.55;animation-duration:16s;animation-delay:-6s}
+.gallery-current-bands span:nth-child(3){top:78%;left:-35%;opacity:.38;animation-duration:19s;animation-delay:-11s}
+@keyframes currentBand{from{transform:translateX(0)}to{transform:translateX(220%)}}
+@keyframes galleryWaterFlow{from{background-position:0 0,0 0}to{background-position:0 115px,150px 0}}
+@keyframes gallerySurfaceFlow{from{transform:translateX(-7%) skewX(-9deg);opacity:.18}to{transform:translateX(7%) skewX(-9deg);opacity:.55}}
+.gallery-track{position:absolute!important;inset:0!important;display:block!important;width:100%!important;height:100%!important;padding:0!important;margin:0!important;overflow:hidden!important;container-type:inline-size;z-index:4!important;transform:none!important;animation:none!important}
+.gallery-track .floating-krathong-card{position:absolute!important;left:-158px!important;top:var(--sail-y,12%)!important;width:145px!important;height:140px!important;display:block!important;flex:none!important;animation:galleryKrathongSail var(--sail-duration,56s) linear var(--sail-delay,0s) infinite!important;filter:drop-shadow(0 10px 12px rgba(0,0,0,.34))}
+@keyframes galleryKrathongSail{from{transform:translate3d(0,0,0)}to{transform:translate3d(calc(100cqw + 180px),0,0)}}
+.floating-boat-art{position:relative;width:145px;height:140px;animation:krathongBob 3.8s ease-in-out var(--float-delay,0s) infinite;transform-origin:50% 70%}
+@keyframes krathongBob{0%,100%{translate:0 0;rotate:-1deg}50%{translate:0 -8px;rotate:1deg}}
+.float-water-shadow{position:absolute;left:20px;right:20px;bottom:10px;height:12px;border-radius:50%;background:rgba(4,18,35,.42);filter:blur(7px)}
+.float-base{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);width:105px;height:31px;border-radius:3px 3px 28px 28px;background:linear-gradient(180deg,#e8d09a 0%,#c49d61 48%,#826642 100%);clip-path:polygon(0 0,100% 0,78% 100%,22% 100%);box-shadow:inset 0 2px 2px rgba(255,248,222,.48),0 5px 12px rgba(0,0,0,.22)}
+.float-rim{position:absolute;left:6px;right:6px;top:2px;height:3px;border-radius:50%;background:rgba(255,244,205,.52)}
+.float-leaf{position:absolute;bottom:43px;width:38px;height:24px;border-radius:100% 0 100% 0;background:linear-gradient(140deg,#d1dfa0,#7e9964);box-shadow:0 0 12px rgba(174,207,126,.2)}
+.float-leaf-left{left:17px;transform:rotate(-36deg)}
+.float-leaf-right{right:17px;transform:rotate(72deg) scaleX(-1)}
+.float-flower{position:absolute;left:50%;top:25px;transform:translateX(-50%);font-size:42px;line-height:1;color:#ffd7e8;text-shadow:0 0 18px rgba(255,221,239,.7),0 2px 4px rgba(0,0,0,.22)}
+.float-candle{position:absolute;left:50%;top:7px;transform:translateX(-50%);width:5px;height:17px;border-radius:3px;background:linear-gradient(90deg,#f8dc9d,#fff2d0,#d9b77b);box-shadow:0 0 13px 4px rgba(255,219,135,.28)}
+.float-flame{position:absolute;left:50%;top:-9px;width:7px;height:10px;transform:translateX(-50%);border-radius:70% 30% 60% 40%;background:#fff1b5;box-shadow:0 0 12px 4px rgba(255,213,120,.7);animation:candleFlicker .9s ease-in-out infinite alternate}
+@keyframes candleFlicker{from{opacity:.72;scale:.88;rotate:-5deg}to{opacity:1;scale:1.12;rotate:5deg}}
+.float-name{position:absolute;left:50%;bottom:2px;transform:translateX(-50%);z-index:5;min-width:92px;max-width:132px;padding:5px 12px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-radius:2px 2px 16px 16px;color:#382d24;font-size:11px;background:linear-gradient(90deg,#b29a68,#f0d9a5,#b29a68);box-shadow:0 4px 10px rgba(0,0,0,.22)}
+.floating-krathong-card[data-style="jasmine"] .float-flower{color:#fff0f4}
+.floating-krathong-card[data-style="marigold"] .float-flower{color:#ffdf8a;text-shadow:0 0 18px rgba(255,206,109,.72)}
+.floating-krathong-card[data-style="marigold"] .float-base{background:linear-gradient(180deg,#edcf83,#c69b50 55%,#85663b)}
+.success-river-track .floating-krathong-card{width:145px;height:140px;flex:none}
+.success-river-track .floating-boat-art{transform:scale(.78);transform-origin:top center}
+@media(max-width:560px){.gallery-river{height:340px;min-height:300px}.gallery-track .floating-krathong-card{width:120px!important;height:120px!important;left:-132px!important}.gallery-track .floating-boat-art{transform:scale(.84);transform-origin:top left}.community-river-track .floating-krathong-card{width:100px!important;height:90px!important}.community-river-track .floating-boat-art{transform:scale(.68);transform-origin:top left}.float-name{font-size:10px}}
+@media(prefers-reduced-motion:reduce){.home-current,.gallery-current-bands span,.gallery-water-lines,.gallery-river:after,.community-river-track .floating-krathong-card,.gallery-track .floating-krathong-card,.floating-boat-art,.float-flame{animation-duration:30s!important}}

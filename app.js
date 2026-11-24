@@ -165,34 +165,58 @@
     sending = false;
   }
   function renderFloatingKrathongs(container, items) {
+    if (!container) return;
     container.innerHTML = '';
-    if (!items.length) { container.textContent = 'ยังไม่มีใครลอยกระทง'; return; }
-    // Gallery uses one visible boat per database row. Movement is per-card, so no clone duplicates.
+    if (!items || !items.length) {
+      container.textContent = 'ยังไม่มีใครลอยกระทง';
+      return;
+    }
+
+    // One Supabase row creates one visible krathong. No cloned rows are used.
     const isGallery = container.id === 'galleryTrack';
-    const loopItems = isGallery ? items : (container.id === 'floatingTrack' ? [...items, ...items] : items);
-    loopItems.forEach((item, index) => {
-      const card = document.createElement('div'); card.className = 'floating-krathong-card';
-      card.style.setProperty('--float-delay', `${index * -2.4}s`);
-      if (isGallery) {
-        card.style.setProperty('--sail-delay', `${index * -7.5}s`);
-        card.style.setProperty('--sail-duration', `${42 + (index % 4) * 5}s`);
-        card.style.setProperty('--sail-y', `${14 + (index % 5) * 15}%`);
-      }
-      card.innerHTML = `<span class="float-leaf float-leaf-left"></span><span class="float-leaf float-leaf-right"></span><span class="float-base"></span><span class="float-flower">${item.krathong_style === 'jasmine' ? '✽' : item.krathong_style === 'marigold' ? '✺' : '✿'}</span><span class="float-candle">☼</span><span class="float-name"></span>`;
+    const isHome = container.id === 'homeRiverTrack';
+    const visibleItems = isHome ? items.slice(0, 2) : items;
+    const lanePositions = isGallery ? [12, 30, 48, 66] : [22, 54];
+
+    visibleItems.forEach((item, index) => {
+      const card = document.createElement('div');
+      card.className = 'floating-krathong-card';
+      card.dataset.style = item.krathong_style || 'lotus';
+
+      const duration = isHome ? 30 + (index % 2) * 4 : isGallery ? 52 + (index % 4) * 4 : 36;
+      const phaseDelay = visibleItems.length > 1 ? -(duration * index / visibleItems.length) : 0;
+      const lane = index % lanePositions.length;
+      card.style.setProperty('--sail-duration', `${duration}s`);
+      card.style.setProperty('--sail-delay', `${phaseDelay}s`);
+      card.style.setProperty('--sail-y', `${lanePositions[lane]}%`);
+      card.style.setProperty('--float-delay', `${index * -1.3}s`);
+
+      const flower = item.krathong_style === 'jasmine' ? '✽' : item.krathong_style === 'marigold' ? '✺' : '✿';
+      card.innerHTML = `
+        <div class="floating-boat-art" aria-hidden="true">
+          <span class="float-water-shadow"></span>
+          <span class="float-leaf float-leaf-left"></span>
+          <span class="float-leaf float-leaf-right"></span>
+          <span class="float-base"><i class="float-rim"></i></span>
+          <span class="float-flower">${flower}</span>
+          <span class="float-candle"><i class="float-flame"></i></span>
+          <span class="float-name"></span>
+        </div>`;
       card.querySelector('.float-name').textContent = item.from_name || 'ผู้ไม่ระบุชื่อ';
       container.appendChild(card);
     });
   }
+
   async function loadFloatingPreview() {
     if (!supabaseClient) return;
-    const { data, error } = await supabaseClient.from('floating_krathongs').select('from_name,krathong_style,created_at').order('created_at', { ascending: false }).limit(30);
+    const { data, error } = await supabaseClient.from('floating_krathongs').select('from_name,krathong_style,created_at').order('created_at', { ascending: false }).limit(1);
     if (!error && data) renderFloatingKrathongs($('floatingTrack'), data);
   }
   async function loadHomeRiver() {
     const riverTrack = $('homeRiverTrack');
     if (!riverTrack || !supabaseClient) return;
-    const { data, error } = await supabaseClient.from('floating_krathongs').select('from_name,krathong_style,created_at').order('created_at', { ascending: false }).limit(24);
-    if (!error && data) renderFloatingKrathongs(riverTrack, data.slice(0, 2));
+    const { data, error } = await supabaseClient.from('floating_krathongs').select('from_name,krathong_style,created_at').order('created_at', { ascending: false }).limit(2);
+    if (!error && data) renderFloatingKrathongs(riverTrack, data);
   }
   async function loadGallery() {
     const track = $('galleryTrack');
