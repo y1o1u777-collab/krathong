@@ -132,18 +132,46 @@
         .order('created_at', { ascending: false })
         .limit(MAX_LOCAL_RECORDS);
       if (error) throw error;
-      const remote = (data || []).filter(row => typeof row.wish === 'string').map(row => ({
-        id: String(row.id), name: safeText(row.name, 30) || 'ไม่ระบุชื่อ',
-        wish: safeText(row.wish, MAX_WISH), design: ['gold','lotus','jasmine','marigold','purple','nature','colorful','moon'].includes(row.design) ? row.design : 'gold',
-        created_at: row.created_at || new Date().toISOString(), source: 'cloud'
-      }));
+
+      const normaliseRow = (row, prefix = '') => ({
+        id: prefix + String(row.id),
+        name: safeText(row.name, 30) || 'ไม่ระบุชื่อ',
+        wish: safeText(row.wish, MAX_WISH),
+        design: ['gold','lotus','jasmine','marigold','purple','nature','colorful','moon'].includes(row.design) ? row.design : 'gold',
+        created_at: row.created_at || new Date().toISOString(),
+        source: prefix ? 'legacy-cloud' : 'cloud'
+      });
+      const remote = (data || []).filter(row => typeof row.wish === 'string').map(row => normaliseRow(row));
+
+      // Keep showing legacy public records where the old table still exists and
+      // its current RLS policy already allows reading. Never write to this table.
+      const legacyTable = safeText(CONFIG.LEGACY_SUPABASE_TABLE || '', 64);
+      if (legacyTable && legacyTable !== table) {
+        try {
+          const legacyResult = await state.supabase.from(legacyTable)
+            .select('id, name, wish, design, created_at')
+            .order('created_at', { ascending: false })
+            .limit(MAX_LOCAL_RECORDS);
+          if (!legacyResult.error) {
+            remote.push(...(legacyResult.data || [])
+              .filter(row => typeof row.wish === 'string')
+              .map(row => normaliseRow(row, 'legacy-')));
+          } else {
+            console.info('Krathong: legacy gallery table is not readable; existing data was left untouched.');
+          }
+        } catch (legacyError) {
+          console.info('Krathong: legacy gallery table is unavailable; existing data was left untouched.');
+        }
+      }
+
       const remoteIds = new Set(remote.map(item => item.id));
       const pendingLocal = state.wishes.filter(item => item.pending === true && !remoteIds.has(item.id));
       state.wishes = [...remote, ...pendingLocal].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
       persistLocal();
       state.cloudReady = true;
       setConnection(true, 'เชื่อมต่อคลาวด์แล้ว');
-      // Retry a small batch of locally saved wishes that have not reached the cloud yet.
+
+      // Retry locally queued records. Their UUID remains the same across retries.
       for (const pendingWish of pendingLocal.slice(0, 10)) {
         await saveToCloud(pendingWish);
       }
@@ -160,13 +188,36 @@
     if (!state.supabase) return { ok: false, reason: 'offline' };
     const table = safeText(CONFIG.SUPABASE_TABLE || 'krathongs_gallery', 64);
     try {
-      const payload = { id: wish.id, name: wish.name, wish: wish.wish, design: wish.design };
-      const { data, error } = await state.supabase.from(table).upsert(payload, { onConflict: 'id' }).select('id, name, wish, design, created_at').single();
-      if (error) throw error;
+      const payload = {
+        id: wish.id,
+        name: safeText(wish.name, 30) || 'ไม่ระบุชื่อ',
+        wish: safeText(wish.wish, MAX_WISH),
+        design: ['gold','lotus','jasmine','marigold','purple','nature','colorful','moon'].includes(wish.design) ? wish.design : 'gold'
+      };
+      let result = await state.supabase.from(table)
+        .insert(payload)
+        .select('id, name, wish, design, created_at')
+        .single();
+
+      // A retry after a network timeout can encounter the row already inserted.
+      // Read that same UUID instead of granting public UPDATE permission.
+      if (result.error && result.error.code === '23505') {
+        result = await state.supabase.from(table)
+          .select('id, name, wish, design, created_at')
+          .eq('id', wish.id)
+          .maybeSingle();
+      }
+      if (result.error) throw result.error;
+      if (!result.data) throw new Error('Supabase returned no saved Gallery record.');
+
+      const data = result.data;
       const synced = {
-        id: String(data.id), name: safeText(data.name, 30) || wish.name,
-        wish: safeText(data.wish, MAX_WISH), design: ['gold','lotus','jasmine','marigold','purple','nature','colorful','moon'].includes(data.design) ? data.design : wish.design,
-        created_at: data.created_at || wish.created_at, source: 'cloud'
+        id: String(data.id),
+        name: safeText(data.name, 30) || wish.name,
+        wish: safeText(data.wish, MAX_WISH),
+        design: ['gold','lotus','jasmine','marigold','purple','nature','colorful','moon'].includes(data.design) ? data.design : wish.design,
+        created_at: data.created_at || wish.created_at,
+        source: 'cloud'
       };
       state.wishes = state.wishes.map(item => item.id === wish.id ? synced : item);
       persistLocal();
