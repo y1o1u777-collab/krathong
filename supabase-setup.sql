@@ -34,9 +34,10 @@ drop policy if exists "Only site owner can read wishes" on public.wishes;
 create policy "Only site owner can read wishes"
 on public.wishes for select
 to authenticated
-using (auth.uid() = 'ADMIN_USER_UUID'::uuid);
+using ((select auth.uid()) = 'ADMIN_USER_UUID'::uuid);
 
 -- ไม่สร้าง policy สำหรับ update/delete เพื่อไม่เปิดให้แก้ไขหรือลบผ่าน API
 grant usage on schema public to anon, authenticated;
-grant insert on public.wishes to anon, authenticated;
-grant select on public.wishes to authenticated;
+revoke all privileges on table public.wishes from anon, authenticated;
+grant insert on table public.wishes to anon, authenticated;
+grant select on table public.wishes to authenticated;
